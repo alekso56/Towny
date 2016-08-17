@@ -267,7 +267,6 @@ public class TownyEntityListener implements Listener {
 		if (event.getEntity() instanceof LivingEntity) {
 			LivingEntity livingEntity = (LivingEntity) event.getEntity();
 			Location loc = event.getLocation();
-			Coord coord = Coord.parseCoord(loc);
 			TownyWorld townyWorld = null;
 
 			try {
@@ -290,27 +289,6 @@ public class TownyEntityListener implements Listener {
 					} else
 						event.setCancelled(true);
 				}
-
-			// remove from towns if in the list and set to remove
-			try {
-				TownBlock townBlock = townyWorld.getTownBlock(coord);
-				if (townyWorld.isUsingTowny() && !townyWorld.isForceTownMobs()) {
-					if (!townBlock.getTown().hasMobs() && !townBlock.getPermissions().mobs) {
-						if ((MobRemovalTimerTask.isRemovingTownEntity(livingEntity) || ((livingEntity instanceof Villager) && !((Villager) livingEntity).isAdult() && (TownySettings.isRemovingVillagerBabiesTown())))) {
-							if (plugin.isCitizens2()) {
-								if (!CitizensAPI.getNPCRegistry().isNPC(livingEntity)) {
-									// TownyMessaging.sendDebugMsg("onCreatureSpawn town: Canceled "
-									// + event.getEntityType().name() +
-									// " from spawning within "+coord.toString()+".");
-									event.setCancelled(true);
-								}
-							} else
-								event.setCancelled(true);
-						}
-					}
-				}
-			} catch (TownyException x) {
-			}
 		}
 	}
 
